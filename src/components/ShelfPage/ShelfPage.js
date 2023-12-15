@@ -20,14 +20,29 @@ function ShelfPage() {
       description: description,
       image_url: imageUrl,
     }).then(response => {
+      setDescription('');
+      setImageUrl('');
       fetchShelf();
     }).catch(error => {
       console.error(error);
       alert('Something went wrong.');
     });
-    
-    // setDescription('');
-    // setImageUrl('');
+
+
+  };
+
+  const deleteItem = (e, id) => {
+
+    e.preventDefault();
+
+    axios.delete(`/api/shelf/${id}`)
+      .then(response => {
+        fetchShelf();
+      })
+      .catch(error => {
+        console.error(error);
+        alert('Something went wrong.');
+      });
 
   };
 
@@ -76,7 +91,7 @@ function ShelfPage() {
               <br />
               <div className="desc">{item.description}</div>
               <div style={{ textAlign: 'center', padding: '5px' }}>
-                <button style={{ cursor: 'pointer' }}>Delete</button>
+                <button onClick={e => deleteItem(e, item.id)} style={{ cursor: 'pointer' }}>Delete</button>
               </div>
             </div>
           </div>
