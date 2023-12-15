@@ -21,20 +21,20 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
 
   console.log(req.body);
-  
+
   // endpoint functionality
   let queryText = `
   INSERT INTO "item" ("description", "image_url", "user_id")
   VALUES ($1, $2, $3);
   `;
   pool.query(queryText, [req.body.description, req.body.image_url, req.params.user])
-  .then(result => {
-    res.sendStatus(200);
-  })
-  .catch(error => {
-    console.error('Error in the POST request:', error);
-    res.sendStatus(500);
-  })
+    .then(result => {
+      res.sendStatus(200);
+    })
+    .catch(error => {
+      console.error('Error in the POST request:', error);
+      res.sendStatus(500);
+    })
 
 });
 
@@ -42,7 +42,20 @@ router.post('/', (req, res) => {
  * Delete an item
  */
 router.delete('/:id', (req, res) => {
+
   // endpoint functionality
+  let queryText = `
+  DELETE FROM "item" WHERE "id" = $1;
+  `;
+  pool.query(queryText, [req.params.id])
+    .then(result => {
+      res.sendStatus(200);
+    })
+    .catch(error => {
+      console.error('Error in DELETE request:', error);
+      res.sendStatus(500);
+    });
+
 });
 
 module.exports = router;
